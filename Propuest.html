@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propuesta Web — Picha Trail Fest 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --dirt:    #f5f0e8;  
+  --mud:     #ece6d8; 
+  --trail:   #c8bda8;   
+  --pine:    #d8edda;  
+  --leaf:    #5a9e68; 
+  --lime:    #3a8c4a; 
+  --sun:     #c07e10; 
+  --fog:     #4a4238; 
+  --snow:    #1e1a14;  
+  --stone:   #7a6e60;  
+  --ink:     #e8e0d0;  
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--dirt);
+  color: var(--snow);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── SCROLL ANIMATIONS ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cover {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 64px 56px;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.cover-mountains {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.cover-noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.cover-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  z-index: 2;
+}
+
+.cover-from {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--lime);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cover-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--stone);
+  border: 1px solid var(--trail);
+  padding: 5px 14px;
+  border-radius: 2px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cover-mid {
+  position: relative;
+  z-index: 2;
+  padding: 0 0 32px;
+}
+
+.cover-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--lime);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cover-eyebrow::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--lime);
+}
+
+.cover-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 12vw, 140px);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: var(--snow);
+  margin-bottom: 32px;
+}
+.cover-title .accent { color: var(--lime); }
+.cover-title .year {
+  font-size: 0.45em;
+  color: var(--stone);
+  display: block;
+  letter-spacing: 0.08em;
+}
+
+.cover-desc {
+  font-size: 16px;
+  color: var(--fog);
+  max-width: 540px;
+  line-height: 1.75;
+  font-weight: 400;
+  border-left: 2px solid var(--leaf);
+  padding-left: 20px;
+}
+
+.cover-bottom {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.cover-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--stone);
+  line-height: 2;
+}
+.cover-meta strong { color: var(--fog); }
+
+.cover-stack {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.stack-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 4px 12px;
+  border: 1px solid var(--trail);
+  color: var(--fog);
+  border-radius: 2px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.4);
+}
+
+.section {
+  padding: 80px 64px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--lime);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--lime);
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 0.95;
+  color: var(--snow);
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+}
+
+.section-intro {
+  font-size: 15px;
+  color: var(--fog);
+  max-width: 560px;
+  line-height: 1.75;
+  margin-bottom: 56px;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--trail) 20%, var(--trail) 80%, transparent);
+  margin: 0 64px;
+}
+
+.summary-strip {
+  background: var(--mud);
+  border-top: 1px solid var(--trail);
+  border-bottom: 1px solid var(--trail);
+  padding: 0 64px;
+}
+
+.summary-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.sum-item {
+  padding: 40px 0;
+  border-right: 1px solid var(--trail);
+  padding-right: 40px;
+  padding-left: 40px;
+}
+.sum-item:first-child { padding-left: 0; }
+.sum-item:last-child { border-right: none; }
+
+.sum-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--lime);
+  letter-spacing: 0.02em;
+}
+.sum-unit {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--stone);
+  margin-top: 6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.modules-table { width: 100%; }
+
+.mod-header {
+  display: grid;
+  grid-template-columns: 1fr 120px 170px;
+  gap: 0;
+  padding: 0 0 12px;
+  border-bottom: 1px solid var(--trail);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--stone);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mod-row {
+  display: grid;
+  grid-template-columns: 1fr 120px 170px;
+  gap: 0;
+  border-bottom: 1px solid var(--trail);
+  padding: 28px 0;
+  align-items: start;
+  transition: background 0.2s;
+}
+.mod-row:hover { background: rgba(0,0,0,0.03); }
+.mod-row:last-child { border-bottom: none; }
+
+.mod-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--snow);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.mod-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  padding: 2px 8px;
+  background: var(--lime);
+  color: #fff;
+  border-radius: 2px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.mod-sub {
+  font-size: 12px;
+  color: var(--stone);
+  line-height: 1.7;
+}
+
+.mod-hrs {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--fog);
+  padding-top: 2px;
+}
+
+.mod-price {
+  text-align: right;
+  padding-top: 2px;
+}
+.mod-price-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--snow);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.mod-price-note {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--stone);
+  margin-top: 4px;
+}
+
+.total-section {
+  background: var(--pine);
+  border: 1px solid var(--leaf);
+  border-radius: 4px;
+  padding: 40px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+
+.total-label-sm {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--lime);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.total-amount {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 64px;
+  line-height: 1;
+  color: var(--snow);
+  letter-spacing: 0.04em;
+}
+.total-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--fog);
+  margin-top: 8px;
+}
+
+.total-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.total-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--fog);
+}
+.check-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  flex-shrink: 0;
+}
+
+.note {
+  border-left: 2px solid var(--sun);
+  background: rgba(192, 126, 16, 0.08);
+  padding: 20px 24px;
+  border-radius: 0 4px 4px 0;
+  margin-top: 32px;
+}
+.note-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--sun);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.note p {
+  font-size: 13px;
+  color: var(--fog);
+  line-height: 1.7;
+}
+
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 48px;
+}
+
+.list-block-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--trail);
+}
+
+.list-block ul { list-style: none; }
+.list-block ul li {
+  font-size: 13px;
+  color: var(--fog);
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.list-block.minus li::before {
+  content: '—';
+  color: var(--trail);
+  font-family: 'JetBrains Mono', monospace;
+  flex-shrink: 0;
+}
+
+.list-block.plus li::before {
+  content: '+';
+  color: var(--lime);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.portfolio-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--trail);
+  border: 1px solid var(--trail);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.project-row {
+  background: var(--mud);
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 0;
+  transition: background 0.2s;
+}
+.project-row:hover { background: #ddd8cc; }
+
+.proj-num-col {
+  border-right: 1px solid var(--trail);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+.proj-num-col span {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  color: var(--stone);
+  letter-spacing: 0.04em;
+}
+
+.proj-body {
+  padding: 28px 32px;
+}
+.proj-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--snow);
+  margin-bottom: 8px;
+}
+.proj-desc {
+  font-size: 13px;
+  color: var(--fog);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+.tech-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.tech-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 3px 10px;
+  border: 1px solid var(--trail);
+  color: var(--stone);
+  border-radius: 2px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.proj-link-col {
+  display: flex;
+  align-items: center;
+  padding: 28px 28px;
+  border-left: 1px solid var(--trail);
+}
+.proj-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--lime);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  transition: color 0.2s;
+}
+.proj-link:hover { color: var(--snow); }
+
+
+.timeline {
+  display: flex;
+  gap: 0;
+  position: relative;
+  margin-top: 48px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  height: 1px;
+  background: var(--trail);
+  z-index: 0;
+}
+
+.tl-item {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.tl-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--lime);
+  margin: 34px auto 20px;
+  box-shadow: 0 0 0 4px var(--dirt);
+}
+.tl-dot.hollow {
+  background: var(--dirt);
+  border: 2px solid var(--stone);
+}
+.tl-week {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--lime);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.tl-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--snow);
+  margin-bottom: 4px;
+}
+.tl-desc {
+  font-size: 11px;
+  color: var(--stone);
+  line-height: 1.6;
+}
+
+
+.payment-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--trail);
+  border: 1px solid var(--trail);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 48px;
+}
+.pay-cell {
+  background: var(--mud);
+  padding: 36px 40px;
+  text-align: center;
+}
+.pay-pct {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 72px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.pay-pct.green { color: var(--lime); }
+.pay-pct.muted { color: var(--stone); }
+.pay-when {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--fog);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.pay-desc {
+  font-size: 12px;
+  color: var(--stone);
+}
+
+.doc-footer {
+  border-top: 1px solid var(--trail);
+  padding: 40px 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--mud);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-left {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--stone);
+  line-height: 2;
+}
+.footer-left strong { color: var(--lime); }
+.footer-right {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  color: var(--trail);
+  letter-spacing: 0.04em;
+  text-align: right;
+}
+
+
+@media print {
+  .reveal { opacity: 1; transform: none; }
+  .cover { min-height: 100vh; page-break-after: always; }
+  .section { padding: 48px 40px; page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <svg class="cover-mountains" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#c8e0d8"/>
+        <stop offset="100%" stop-color="#e8e0d0"/>
+      </linearGradient>
+    </defs>
+    <rect width="1440" height="900" fill="url(#sky)"/>
+    <polygon points="0,900 0,520 120,380 220,460 340,310 460,430 560,280 680,420 780,260 900,410 1020,290 1140,450 1240,320 1360,440 1440,350 1440,900" fill="#a8c4a0" opacity="0.5"/>
+    <polygon points="0,900 0,620 80,540 180,590 300,480 420,560 520,430 640,530 720,400 840,510 980,420 1100,530 1200,440 1320,540 1440,460 1440,900" fill="#90b490" opacity="0.6"/>
+    <polygon points="0,900 0,750 100,700 200,730 340,660 460,710 560,650 700,700 820,640 960,690 1080,640 1200,700 1320,650 1440,690 1440,900" fill="#70a070"/>
+    <rect x="0" y="820" width="1440" height="80" fill="#70a070"/>
+    <g fill="#507858">
+      <polygon points="60,820 70,760 80,820"/>
+      <polygon points="72,820 73,750 82,820"/>
+      <polygon points="160,820 172,755 184,820"/>
+      <polygon points="175,820 176,745 185,820"/>
+      <polygon points="380,820 390,758 400,820"/>
+      <polygon points="700,820 712,752 724,820"/>
+      <polygon points="715,820 716,745 726,820"/>
+      <polygon points="920,820 934,755 948,820"/>
+      <polygon points="1200,820 1212,760 1224,820"/>
+      <polygon points="1215,820 1216,750 1226,820"/>
+      <polygon points="1350,820 1362,758 1374,820"/>
+    </g>
+    <circle cx="1320" cy="100" r="42" fill="#f5e090" opacity="0.7"/>
+    <circle cx="1320" cy="100" r="28" fill="#f0d060" opacity="0.9"/>
+  </svg>
+  <div class="cover-noise"></div>
+
+  <div class="cover-top">
+    <div class="cover-from">Propuesta técnica · Mayo 2026</div>
+    <div class="cover-badge">Confidencial</div>
+  </div>
+
+  <div class="cover-mid">
+    <div class="cover-eyebrow">Desarrollo web a medida</div>
+    <div class="cover-title">
+      Picha<br>
+      Trail <span class="accent">Fest</span><br>
+      <span class="year">2026</span>
+    </div>
+    <div class="cover-desc">
+      Sitio web con inscripciones online y pasarela de pagos integrada. Frontend Vue.js 3 + Backend Laravel + Niubiz. Referencia: trailfestperu.com.
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="cover-meta">
+      <div><strong>Fecha de emisión:</strong> Mayo 2026</div>
+      <div><strong>Válido por:</strong> 30 días</div>
+      <div><strong>Hosting / Dominio:</strong> A cargo del cliente</div>
+    </div>
+    <div class="cover-stack">
+      <span class="stack-tag">Vue.js 3</span>
+      <span class="stack-tag">Laravel</span>
+      <span class="stack-tag">Niubiz</span>
+      <span class="stack-tag">MySQL</span>
+      <span class="stack-tag">Hostinger</span>
+    </div>
+  </div>
+</div>
+
+<div class="summary-strip">
+  <div class="summary-inner">
+    <div class="sum-item reveal">
+      <div class="sum-num">S/ 4,500</div>
+      <div class="sum-unit">Desde — presupuesto estimado</div>
+    </div>
+    <div class="sum-item reveal" style="transition-delay:0.1s">
+      <div class="sum-num">86–118</div>
+      <div class="sum-unit">Horas de desarrollo total</div>
+    </div>
+    <div class="sum-item reveal" style="transition-delay:0.2s">
+      <div class="sum-num">5–7</div>
+      <div class="sum-unit">Semanas de plazo de entrega</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-label reveal">Cotización detallada</div>
+  <div class="section-title reveal">Desglose<br>del proyecto</div>
+  <div class="section-intro reveal">El proyecto contempla el desarrollo completo desde cero: frontend Vue.js, backend API Laravel y pasarela de pagos Niubiz para gestión de inscripciones.</div>
+
+  <div class="modules-table reveal">
+    <div class="mod-header">
+      <div>Módulo</div>
+      <div>Horas est.</div>
+      <div style="text-align:right">Precio</div>
+    </div>
+
+    <div class="mod-row">
+      <div class="mod-info">
+        <div class="mod-name">Frontend Vue.js 3</div>
+        <div class="mod-sub">Landing page con countdown · Sección de distancias (7K, 14K, 21K) · Galería de fotos · Mapas de ruta · Diseño responsive mobile-first · Animaciones y efectos de scroll · Formulario de registro/login de participantes</div>
+      </div>
+      <div class="mod-hrs">28–36 h</div>
+      <div class="mod-price">
+        <div class="mod-price-num">S/ 1,400 – 1,800</div>
+        <div class="mod-price-note">Frontend completo</div>
+      </div>
+    </div>
+
+    <div class="mod-row">
+      <div class="mod-info">
+        <div class="mod-name">Integración Niubiz <span class="mod-badge">Clave</span></div>
+        <div class="mod-sub">API Niubiz Commerce · Carrito de inscripciones · Checkout completo · Manejo de respuesta éxito/error · Webhook de confirmación de pago · Pruebas en sandbox</div>
+      </div>
+      <div class="mod-hrs">20–28 h</div>
+      <div class="mod-price">
+        <div class="mod-price-num">S/ 1,200 – 1,600</div>
+        <div class="mod-price-note">Pasarela de pagos</div>
+      </div>
+    </div>
+
+    <div class="mod-row">
+      <div class="mod-info">
+        <div class="mod-name">Backend PHP / Laravel</div>
+        <div class="mod-sub">API REST para inscripciones y productos · Gestión de distancias y stock de cupos · Panel de administración básico · Autenticación de participantes · Envío de email de confirmación</div>
+      </div>
+      <div class="mod-hrs">24–32 h</div>
+      <div class="mod-price">
+        <div class="mod-price-num">S/ 1,200 – 1,600</div>
+        <div class="mod-price-note">API y administración</div>
+      </div>
+    </div>
+
+    <div class="mod-row">
+      <div class="mod-info">
+        <div class="mod-name">Despliegue en Hostinger</div>
+        <div class="mod-sub">Configuración VPS / Cloud · Nginx + SSL Let's Encrypt · Deploy de Laravel y build de Vue · Variables de entorno Niubiz</div>
+      </div>
+      <div class="mod-hrs">6–10 h</div>
+      <div class="mod-price">
+        <div class="mod-price-num">S/ 300 – 500</div>
+        <div class="mod-price-note">Infraestructura</div>
+      </div>
+    </div>
+
+    <div class="mod-row">
+      <div class="mod-info">
+        <div class="mod-name">QA y pruebas</div>
+        <div class="mod-sub">Pruebas del flujo de pago completo · Testing en distintos dispositivos · Corrección de bugs · Revisión de UX y formularios</div>
+      </div>
+      <div class="mod-hrs">8–12 h</div>
+      <div class="mod-price">
+        <div class="mod-price-num">S/ 400 – 600</div>
+        <div class="mod-price-note">Calidad</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="total-section reveal">
+    <div class="total-left">
+      <div class="total-label-sm">Total estimado del proyecto</div>
+      <div class="total-amount">S/ 4,500 – 6,100</div>
+      <div class="total-sub">Sin hosting ni dominio · Precios en soles peruanos · IVA no incluido</div>
+    </div>
+    <div class="total-right">
+      <div class="total-check"><span class="check-dot"></span> 86–118 horas de trabajo</div>
+      <div class="total-check"><span class="check-dot"></span> 5–7 semanas de plazo</div>
+      <div class="total-check"><span class="check-dot"></span> Entrega con código fuente</div>
+      <div class="total-check"><span class="check-dot"></span> 30 días soporte post-entrega</div>
+    </div>
+  </div>
+
+  <div class="note reveal">
+    <div class="note-title">⚠ Importante sobre Niubiz</div>
+    <p>Para integrar la pasarela, el cliente debe contar con afiliación Niubiz activa (commerce code, merchant ID y credenciales de API). Si aún no la tiene, debe tramitarla con su banco afiliado (BCP, Scotiabank u otros). Este proceso puede tomar 1–2 semanas adicionales y no depende del desarrollador.</p>
+  </div>
+
+  <div class="two-col reveal">
+    <div class="list-block minus">
+      <div class="list-block-title">No incluido</div>
+      <ul>
+        <li>Hosting y dominio (lo gestiona el cliente)</li>
+        <li>Diseño de logo o identidad visual</li>
+        <li>Fotografía y videos del evento</li>
+        <li>Contenido (textos, mapas, imágenes)</li>
+        <li>App móvil nativa</li>
+        <li>Mantenimiento post-lanzamiento</li>
+      </ul>
+    </div>
+    <div class="list-block plus">
+      <div class="list-block-title">Opcionales — cotizar aparte</div>
+      <ul>
+        <li>QR / voucher PDF enviado al participante</li>
+        <li>Exportación de inscritos a Excel</li>
+        <li>Sistema de cupones y descuentos</li>
+        <li>Integración con WhatsApp API</li>
+        <li>Plan de mantenimiento mensual</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-label reveal">Cronograma</div>
+  <div class="section-title reveal">Plazos y<br>forma de pago</div>
+  <div class="section-intro reveal">Desarrollo ágil por módulos con entregas parciales cada semana. El cliente revisa y valida cada fase antes de avanzar.</div>
+
+  <div class="timeline reveal">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week">Semana 1–2</div>
+      <div class="tl-title">Arranque</div>
+      <div class="tl-desc">Setup del proyecto, estructura, base de datos y configuración inicial</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week">Semana 2–4</div>
+      <div class="tl-title">Frontend</div>
+      <div class="tl-desc">Diseño y desarrollo de toda la interfaz en Vue.js 3</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week">Semana 3–5</div>
+      <div class="tl-title">Backend + Niubiz</div>
+      <div class="tl-desc">API REST, panel de administración e integración de pagos</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week">Semana 5–6</div>
+      <div class="tl-title">QA y ajustes</div>
+      <div class="tl-desc">Pruebas en todos los dispositivos y corrección de incidencias</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week">Semana 6–7</div>
+      <div class="tl-title">Lanzamiento</div>
+      <div class="tl-desc">Deploy en Hostinger, SSL, go-live y entrega del código fuente</div>
+    </div>
+  </div>
+
+  <div class="payment-strip reveal">
+    <div class="pay-cell">
+      <div class="pay-pct green">50%</div>
+      <div class="pay-when">Al inicio del proyecto</div>
+      <div class="pay-desc">Pago para arrancar el desarrollo</div>
+    </div>
+    <div class="pay-cell">
+      <div class="pay-pct muted">50%</div>
+      <div class="pay-when">Al entregar el sitio</div>
+      <div class="pay-desc">Contra entrega funcionando en producción</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-label reveal">Trabajos anteriores</div>
+  <div class="section-title reveal">Portafolio</div>
+  <div class="section-intro reveal">Sitios web desarrollados previamente, que demuestran experiencia en diseño responsive y proyectos para el mercado peruano.</div>
+
+  <div class="portfolio-grid reveal">
+
+    <div class="project-row">
+      <div class="proj-num-col"><span>01</span></div>
+      <div class="proj-body">
+        <div class="proj-name">AquaPerú</div>
+        <div class="proj-desc">Sitio corporativo para empresa líder en tratamiento de agua en Perú. Catálogo de servicios, formulario de contacto y diseño que transmite confianza en el sector doméstico e industrial.</div>
+        <div class="tech-pills">
+          <span class="tech-pill">WordPress</span>
+          <span class="tech-pill">Elementor</span>
+          <span class="tech-pill">Responsive</span>
+          <span class="tech-pill">SEO</span>
+          <span class="tech-pill">Sector industrial</span>
+        </div>
+      </div>
+      <div class="proj-link-col">
+        <a class="proj-link" href="https://aquaperu.net" target="_blank">aquaperu.net ↗</a>
+      </div>
+    </div>
+
+    <div class="project-row">
+      <div class="proj-num-col"><span>02</span></div>
+      <div class="proj-body">
+        <div class="proj-name">KS Agency MKT</div>
+        <div class="proj-desc">Landing page de alto impacto para agencia de marketing digital. Orientada a conversión: propuesta de valor clara, llamadas a la acción y diseño moderno para resultados reales en ventas.</div>
+        <div class="tech-pills">
+          <span class="tech-pill">WordPress</span>
+          <span class="tech-pill">Elementor</span>
+          <span class="tech-pill">Landing page</span>
+          <span class="tech-pill">CRO</span>
+          <span class="tech-pill">Marketing</span>
+        </div>
+      </div>
+      <div class="proj-link-col">
+        <a class="proj-link" href="https://ksagencymkt.com" target="_blank">ksagencymkt.com ↗</a>
+      </div>
+    </div>
+
+    <div class="project-row">
+      <div class="proj-num-col"><span>03</span></div>
+      <div class="proj-body">
+        <div class="proj-name">TMO Consulting</div>
+        <div class="proj-desc">Sitio profesional para firma de asesoría contable, tributaria y administrativa en Perú. Diseño corporativo serio orientado a empresas y emprendedores. Sección de servicios y contacto directo.</div>
+        <div class="tech-pills">
+          <span class="tech-pill">WordPress</span>
+          <span class="tech-pill">Elementor</span>
+          <span class="tech-pill">Sector financiero</span>
+          <span class="tech-pill">Corporativo</span>
+          <span class="tech-pill">Perú</span>
+        </div>
+      </div>
+      <div class="proj-link-col">
+        <a class="proj-link" href="https://tmoconsultings.com" target="_blank">tmoconsultings.com ↗</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="doc-footer">
+  <div class="footer-left">
+    <div><strong>Propuesta confidencial</strong></div>
+    <div>Elaborada en Mayo 2026</div>
+    <div></div>
+  </div>
+  <div class="footer-right">PICHA TRAIL FEST 2026</div>
+</div>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
